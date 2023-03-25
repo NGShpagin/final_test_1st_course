@@ -1,0 +1,193 @@
+use `humanFriends`;
+
+## Создаем низкоуровневые таблицы
+
+CREATE TABLE cats (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(45),
+    Command VARCHAR(45),
+    Birthday DATE
+);
+
+
+CREATE TABLE dogs (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(45),
+    Command VARCHAR(45),
+    Birthday DATE
+);
+
+
+CREATE TABLE hamsters (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(45),
+    Command VARCHAR(45),
+    Birthday DATE
+);
+
+
+CREATE TABLE horses (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	liftWeight INT,
+    Name VARCHAR(45),
+    Command VARCHAR(45),
+	Birthday DATE
+);
+
+
+CREATE TABLE camels (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	liftWeight INT,
+    Name VARCHAR(45),
+    Command VARCHAR(45),
+	Birthday DATE
+);
+
+
+CREATE TABLE donkeys (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	liftWeight INT,
+    Name VARCHAR(45),
+    Command VARCHAR(45),
+	Birthday DATE
+);
+
+## Создаем таблицы уровня выше
+
+CREATE TABLE domestic_animals (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(45),
+    Command VARCHAR(45),
+    Birthday DATE
+);
+
+
+CREATE TABLE pack_animals (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(45),
+    Command VARCHAR(45),
+    Birthday DATE
+);
+
+## Создаем общую таблицу
+
+CREATE TABLE animals (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(45),
+    Command VARCHAR(45),
+    Birthday Date
+    );
+
+## Заполнить низкоуровневые таблицы именами(животных), командами, которые они выполняют и датами рождения
+
+INSERT INTO cats (Name, Command, Birthday)
+VALUES
+    ('Марсей', 'Спать', '2022-01-01'),
+    ('Ириска', 'Спать', '2017-06-06'),
+    ('Гайка', 'Спать', '2023-01-06'),
+
+SELECT * FROM cats;
+
+INSERT INTO dogs (Name, Command, Birthday)
+VALUES
+    ('Рекс', 'Лежать', '2022-01-01'),
+    ('Хатико', 'Голос', '2017-06-06'),
+	('Берта', 'Сидеть', '2023-01-06'),
+
+SELECT * FROM dogs;
+
+INSERT INTO hamster (Name, Command, Birthday)
+VALUES
+    ('Хома', 'Бежать', '2022-01-01'),
+    ('Пушок', 'Спать', '2017-06-06'),
+	('Хомура', 'есть', '2023-01-06'),
+
+SELECT * FROM hamster;
+
+INSERT INTO camels (camelName, camelCommand, camelLiftWeight, camelBirthday)
+VALUES
+    ('Агата', 'Поднять', 100, '2022-01-01'),
+    ('Ида', 'Опустить', 200, '2017-06-06'),
+	('Ланцелот', 'Идти', 400, '2023-01-06'),
+
+SELECT * FROM camels;
+
+INSERT INTO horses (Name, Command, liftWeight, Birthday)
+VALUES
+    ('Мерин', 'Галоп', 150, '2022-01-01'),
+    ('Буран', 'Пешком', 50, '2017-06-06'),
+	('Плотва', 'Рысью', 200, '2023-01-06'),
+
+SELECT * FROM horses;
+
+INSERT INTO donkeys (Name, Command, liftWeight, Birthday)
+VALUES
+    ('Алдар', 'Жевать', 35, '2022-01-01'),
+    ('Бригелла', 'Есть', 10, '2017-06-06'),
+	('Зигфрид', 'Пить', 20, '2023-01-06'),
+
+SELECT * FROM donkeys;
+
+## Удалив из таблицы верблюдов, т.к. верблюдов решили перевезти в другой питомник на зимовку.
+Объединить таблицы лошади, и ослы в одну таблицу.
+
+DELETE FROM camels;
+
+INSERT INTO pack_animals (Name, Command, Birthday)
+SELECT Name, Command, Birthday
+FROM horses
+UNION
+SELECT Name, Command, Birthday
+FROM donkeys;
+
+SELECT * FROM pack_animals;
+
+## Создать новую таблицу “молодые животные” в которую попадут все животные старше 1 года, но младше 3 лет и в отдельном
+столбце с точностью до месяца подсчитать возраст животных в новой таблице
+
+INSERT INTO domestic_animals (Name, Command, Birthday)
+SELECT Name, Command, Birthday
+FROM cats
+UNION
+SELECT Name, Command, Birthday
+FROM dogs
+UNION
+SELECT Name, Command, Birthday
+FROM hamsters;
+
+SELECT * FROM domestic_animals;
+
+INSERT INTO animals (Name, Command, Birthday)
+SELECT Name, Command, Birthday
+FROM domestic_animals
+UNION
+SELECT Name, Command, Birthday
+FROM pack_animals;
+
+SELECT * FROM animals;
+
+CREATE TABLE young_animals (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)
+SELECT Name, Command, Birthday, Round((year(current_date()) - year(Birthday)) + (month(current_date() - month(Birthday)))/10, 2) AS age
+FROM animals
+WHERE age > 1 and age < 3;
+SELECT * FROM young_animals;
+
+## Объединить все таблицы в одну, при этом сохраняя поля, указывающие на прошлую принадлежность к старым таблицам
+
+CREATE TABLE all_animals (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY)
+SELECT Name, Command, Birthday, 'cat' as oldTable
+FROM cats
+UNION
+SELECT Name, Command, Birthday, 'dog' as oldTable
+FROM dogs
+UNION
+SELECT Name, Command, Birthday, 'hamster' as oldTable
+FROM hamsters
+UNION
+SELECT Name, Command, Birthday, 'horse' as oldTable
+FROM horses
+UNION
+SELECT Name, Command, Birthday, 'donkey' as oldTable
+FROM donkeys;
+
+SELECT * FROM all_animals;
