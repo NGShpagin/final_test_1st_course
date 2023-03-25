@@ -3,6 +3,7 @@ package Core.MVP;
 import Core.Models.Animal;
 import Core.Models.AnimalTypes;
 
+
 public class Presenter {
     private final Model model;
     private final View view;
@@ -12,8 +13,8 @@ public class Presenter {
         model = new Model();
     }
 
-    public void printAnimal(String table) {
-        model.currentAnimal(table);
+    public void printAnimal(AnimalTypes type) {
+        model.currentAnimal(type);
     }
 
     public void setCurrentIndex(int index) {
@@ -28,25 +29,35 @@ public class Presenter {
         model.currentStation().removeAnimal(type, model.getCurrentIndex());
     }
 
-    public void next(String table) {
-        if (model.currentStation().countAnimal(table) > 0) {
-            if (model.getCurrentIndex() + 1 <= model.currentStation().countAnimal(table)) {
+    public void getCommands(AnimalTypes type) {
+        model.getCommands(type);
+    }
+
+    public void learnNewCommand(AnimalTypes type) {
+        model.learnNewCommand(type, view.getCommand());
+    }
+
+    public void next(AnimalTypes type) {
+        if (model.currentStation().countAnimal(type) > 0) {
+            if (model.getCurrentIndex() + 1 <= model.currentStation().getMaxId(type)) {
                 model.setCurrentIndex(model.getCurrentIndex() + 1);
-                printAnimal(table);
+                while (model.getCurrentIndex() != model.getCurrentAnimalId(type))
+                    model.setCurrentIndex(model.getCurrentIndex() + 1);
+                printAnimal(type);
             } else {
-                printAnimal(table);
+                printAnimal(type);
             }
         }
     }
 
-    public void prev(String table) {
-        if (model.currentStation().countAnimal(table) > 0) {
-            if (model.getCurrentIndex() - 1 > -1) {
+    public void prev(AnimalTypes type) {
+        if (model.currentStation().countAnimal(type) > 0 && model.getCurrentIndex() - 1 > 0) {
+            model.setCurrentIndex(model.getCurrentIndex() - 1);
+            while (model.getCurrentIndex() > -1 && model.getCurrentIndex() != model.getCurrentAnimalId(type))
                 model.setCurrentIndex(model.getCurrentIndex() - 1);
-                printAnimal(table);
-            } else {
-                printAnimal(table);
-            }
+            printAnimal(type);
+        } else {
+            printAnimal(type);
         }
     }
 

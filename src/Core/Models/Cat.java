@@ -1,12 +1,17 @@
 package Core.Models;
 
-import java.util.ArrayList;
-import java.util.Date;
+import DB.SQLite;
 
-public class Cat extends DomesticAnimal {
+public class Cat extends Animal {
 
+    SQLite sqLite = new SQLite();
     public Cat(String name, int age) {
-        super(name, age);
+        super(name, age, AnimalTypes.CAT);
+        sqLite.insertAnimal(type, name, age);
     }
 
+    @Override
+    public int getId(int id) {
+        return super.getId(id);
+    }
 }

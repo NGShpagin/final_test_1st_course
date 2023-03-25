@@ -35,13 +35,13 @@ public class ConsoleView implements View {
     }
 
     @Override
-    public String getCommands() {
-        System.out.print("Commands: ");
+    public String getCommand() {
+        System.out.print("Command: ");
         return sc.nextLine();
     }
 
     @Override
-    public void addNewCommand(String command) {
+    public void learnCommand(String command) {
         System.out.printf("Command: %s\n", command);
     }
 }

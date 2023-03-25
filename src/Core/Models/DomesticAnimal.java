@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class DomesticAnimal<T extends Animal> {
-    public DomesticAnimal(String name, int age) {
+    public DomesticAnimal(String name, int age, AnimalTypes types) {
         super();
     }
 }

@@ -5,6 +5,6 @@ public interface View {
     void setName(String name);
     int getAge();
     void setAge(int age);
-    String getCommands();
-    void addNewCommand(String command);
+    String getCommand();
+    void learnCommand(String command);
 }

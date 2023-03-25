@@ -1,6 +1,7 @@
 package Core.MVP;
 
 import Core.Models.Animal;
+import Core.Models.AnimalTypes;
 import Core.infastructure.BreedingStation;
 
 public class Model {
@@ -13,8 +14,12 @@ public class Model {
         currentIndex = 1;
     }
 
-    public void currentAnimal(String table) {
-        currentStation().getAnimal(table, currentIndex);
+    public void currentAnimal(AnimalTypes type) {
+        currentStation().getAnimal(type, currentIndex);
+    }
+
+    public int getCurrentAnimalId(AnimalTypes type) {
+        return currentStation().getAnimalId(type, currentIndex);
     }
 
     public BreedingStation currentStation() {
@@ -27,5 +32,13 @@ public class Model {
 
     public void setCurrentIndex(int value) {
         this.currentIndex = value;
+    }
+
+    public void getCommands(AnimalTypes type) {
+        currentStation().getAnimalCommands(type, currentIndex);
+    }
+
+    public void learnNewCommand(AnimalTypes type, String command) {
+        currentStation().learnNewCommand(type, currentIndex, command);
     }
 }

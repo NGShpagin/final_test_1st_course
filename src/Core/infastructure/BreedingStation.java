@@ -3,65 +3,52 @@ package Core.infastructure;
 import Core.Models.*;
 import DB.SQLite;
 
+import java.util.ArrayList;
+
 public class BreedingStation {
 
     SQLite sqLite = new SQLite();
+//    ArrayList<Animal> animals = new ArrayList<>();
 
     public BreedingStation() {
-        sqLite.createTable("commands");
-        sqLite.createTable("dogs");
-        sqLite.createTable("cats");
-        sqLite.createTable("hamsters");
     }
 
-    //create new animal
     public void addAnimal(AnimalTypes type, String name, int age) {
-
         switch (type) {
-            case CAT -> {
-                new Cat(name, age);
-                sqLite.insertAnimal("cats", name, age);
-            }
-            case DOG -> {
-                new Dog(name, age);
-                sqLite.insertAnimal("dogs", name, age);
-            }
-            case HAMSTER -> {
-                new Hamster(name, age);
-                sqLite.insertAnimal("hamsters", name, age);
-            }
-            case CAMEL -> {
-                new Camel(name, age);
-                sqLite.insertAnimal("camels", name, age);
-            }
-            case HORSE -> {
-                new Horse(name, age);
-                sqLite.insertAnimal("horses", name, age);
-            }
-            case DONKEY -> {
-                new Donkey(name, age);
-                sqLite.insertAnimal("donkeys", name, age);
-            }
+            case CAT -> new Cat(name, age);
+            case DOG -> new Dog(name, age);
+            case HAMSTER -> new Hamster(name, age);
+            case CAMEL -> new Camel(name, age);
+            case HORSE -> new Horse(name, age);
+            case DONKEY -> new Donkey(name, age);
         }
     }
 
     public void removeAnimal(AnimalTypes type, int id) {
-        switch (type) {
-            case CAT -> sqLite.removeAnimal("cats", id);
-            case DOG -> sqLite.removeAnimal("dogs", id);
-            case HAMSTER -> sqLite.removeAnimal("hamsters", id);
-            case CAMEL -> sqLite.removeAnimal("camels", id);
-            case HORSE -> sqLite.removeAnimal("horses", id);
-            case DONKEY -> sqLite.removeAnimal("donkeys", id);
-        }
+        sqLite.removeAnimal(type, id);
     }
 
-    public void getAnimal(String table, int id) {
-        sqLite.printAnimal(table, id);
+    public void getAnimal(AnimalTypes type, int id) {
+        sqLite.printAnimal(type, id);
     }
 
-    public int countAnimal(String table) {
-        return sqLite.count(table);
+    public int getAnimalId(AnimalTypes type, int id) {
+        return sqLite.getAnimalId(type, id);
+    }
+
+    public int countAnimal(AnimalTypes type) {
+        return sqLite.count(type);
+    }
+    public int getMaxId(AnimalTypes type) {
+        return sqLite.getMaxId(type);
+    }
+
+    public void getAnimalCommands(AnimalTypes type, int id) {
+        sqLite.getCommands(type, id);
+    }
+
+    public void learnNewCommand(AnimalTypes type, int id, String command) {
+        sqLite.learnCommand(type, id, command);
     }
 //
 //    @Override
@@ -78,8 +65,6 @@ public class BreedingStation {
 //    public void remove() {
 //        animals.remove(index);
 //    }
-
-
 //    public boolean remove(int index) {
 //        boolean flag = false;
 //        if (animals.indexOf(index)) {

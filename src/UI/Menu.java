@@ -11,6 +11,7 @@ public class Menu {
 
     public Menu() { }
 
+
     public void mainMenu(Menu menu) {
         Scanner in = new Scanner(System.in);
         System.out.println("1 - Домашние животные\n2 - Вьючные животные\n3 - Выход");
@@ -33,16 +34,16 @@ public class Menu {
         presenter.setCurrentIndex(1);
         switch (key) {
             case "1" -> {
-                presenter.printAnimal("cats");
-                menu.thirdMenu_1_1(menu);
+                presenter.printAnimal(AnimalTypes.CAT);
+                menu.thirdSubMenu(menu, AnimalTypes.CAT);
             }
             case "2" -> {
-                presenter.printAnimal("dogs");
-                menu.thirdMenu_1_2(menu);
+                presenter.printAnimal(AnimalTypes.DOG);
+                menu.thirdSubMenu(menu, AnimalTypes.DOG);
             }
             case "3" -> {
-                presenter.printAnimal("hamsters");
-                menu.thirdMenu_1_3(menu);
+                presenter.printAnimal(AnimalTypes.HAMSTER);
+                menu.thirdSubMenu(menu, AnimalTypes.HAMSTER);
             }
             case "4" -> menu.mainMenu(menu);
             case "5" -> System.exit(0);
@@ -60,16 +61,16 @@ public class Menu {
         presenter.setCurrentIndex(1);
         switch (key) {
             case "1" -> {
-                presenter.printAnimal("horses");
-                menu.thirdMenu_2_1(menu);
+                presenter.printAnimal(AnimalTypes.HORSE);
+                menu.thirdSubMenu(menu, AnimalTypes.HORSE);
             }
             case "2" -> {
-                presenter.printAnimal("camels");
-                menu.thirdMenu_2_2(menu);
+                presenter.printAnimal(AnimalTypes.CAMEL);
+                menu.thirdSubMenu(menu, AnimalTypes.CAMEL);
             }
             case "3" -> {
-                presenter.printAnimal("donkeys");
-                menu.thirdMenu_2_3(menu);
+                presenter.printAnimal(AnimalTypes.DONKEY);
+                menu.thirdSubMenu(menu, AnimalTypes.DONKEY);
             }
             case "4" -> menu.mainMenu(menu);
             case "5" -> System.exit(0);
@@ -80,145 +81,40 @@ public class Menu {
         }
     }
 
-    public void thirdMenu_1_1(Menu menu) {
+    public void thirdSubMenu(Menu menu, AnimalTypes type) {
         Scanner in = new Scanner(System.in);
-        System.out.println("1 - prev (<<<)   2 - next (>>>)\n\n3 - Добавить\n4 - Удалить\n5 - Найти\n6 - Назад\n\n7 - Выход");
+        System.out.println("1 - prev (<<<)   2 - next (>>>)\n\n3 - Добавить\n4 - Удалить\n5 - Обучить команде\n6 - Назад\n\n7 - Выход");
         String key = in.next();
         switch (key) {
             case "1" -> {
-                presenter.prev("cats");
-                menu.thirdMenu_1_1(menu);
+                presenter.prev(type);
+                menu.thirdSubMenu(menu, type);
             }
             case "2" -> {
-                presenter.next("cats");
-                menu.thirdMenu_1_1(menu);
+                presenter.next(type);
+                menu.thirdSubMenu(menu, type);
             }
-            case "4" -> presenter.removeAnimal(AnimalTypes.CAT);
-            case "3" -> presenter.addAnimal(AnimalTypes.CAT);
+            case "3" -> {
+                presenter.addAnimal(type);
+                presenter.setCurrentIndex(1);
+                presenter.printAnimal(type);
+                menu.thirdSubMenu(menu, type);
+            }
+            case "4" -> {
+                presenter.removeAnimal(type);
+                presenter.setCurrentIndex(1);
+                presenter.printAnimal(type);
+                menu.thirdSubMenu(menu, type);
+            }
+            case "5" -> {
+                presenter.learnNewCommand(type);
+                presenter.printAnimal(type);
+                menu.thirdSubMenu(menu, type);
+            }
             case "6" -> menu.secondMenu_1(menu);
             case "7" -> System.exit(0);
             default -> {
-                menu.thirdMenu_1_1(menu);
-                System.out.println("Такой команды нет");
-            }
-        }
-    }
-
-    public void thirdMenu_1_2(Menu menu) {
-        Scanner in = new Scanner(System.in);
-        System.out.println("1 - prev (<<<)   2 - next (>>>)\n\n3 - Добавить\n4 - Удалить\n5 - Найти\n6 - Назад\n\n7 - Выход");
-        String key = in.next();
-        switch (key) {
-            case "1" -> {
-                presenter.prev("dogs");
-                menu.thirdMenu_1_2(menu);
-            }
-            case "2" -> {
-                presenter.next("dogs");
-                menu.thirdMenu_1_2(menu);
-            }
-            case "3" -> presenter.addAnimal(AnimalTypes.DOG);
-            case "4" -> presenter.removeAnimal(AnimalTypes.DOG);
-            case "6" -> menu.secondMenu_1(menu);
-            case "7" -> System.exit(0);
-            default -> {
-                menu.thirdMenu_1_2(menu);
-                System.out.println("Такой команды нет");
-            }
-        }
-    }
-
-    public void thirdMenu_1_3(Menu menu) {
-        Scanner in = new Scanner(System.in);
-        System.out.println("1 - prev (<<<)   2 - next (>>>)\n\n3 - Добавить\n4 - Удалить\n5 - Найти\n6 - Назад\n\n7 - Выход");
-        String key = in.next();
-        switch (key) {
-            case "1" -> {
-                presenter.prev("hamsters");
-                menu.thirdMenu_1_3(menu);
-            }
-            case "2" -> {
-                presenter.next("hamsters");
-                menu.thirdMenu_1_3(menu);
-            }
-            case "3" -> presenter.addAnimal(AnimalTypes.HAMSTER);
-            case "4" -> presenter.removeAnimal(AnimalTypes.HAMSTER);
-            case "6" -> menu.secondMenu_1(menu);
-            case "7" -> System.exit(0);
-            default -> {
-                menu.thirdMenu_1_3(menu);
-                System.out.println("Такой команды нет");
-            }
-        }
-    }
-
-    public void thirdMenu_2_1(Menu menu) {
-        Scanner in = new Scanner(System.in);
-        System.out.println("1 - prev (<<<)   2 - next (>>>)\n\n3 - Добавить\n4 - Удалить\n5 - Найти\n6 - Назад\n\n7 - Выход");
-        String key = in.next();
-        switch (key) {
-            case "1" -> {
-                presenter.prev("horses");
-                menu.thirdMenu_2_1(menu);
-            }
-            case "2" -> {
-                presenter.next("horses");
-                menu.thirdMenu_2_1(menu);
-            }
-            case "3" -> presenter.addAnimal(AnimalTypes.HORSE);
-            case "4" -> presenter.removeAnimal(AnimalTypes.HORSE);
-            case "6" -> menu.secondMenu_2(menu);
-            case "7" -> System.exit(0);
-            default -> {
-                menu.thirdMenu_2_1(menu);
-                System.out.println("Такой команды нет");
-            }
-        }
-    }
-
-    public void thirdMenu_2_2(Menu menu) {
-        Scanner in = new Scanner(System.in);
-        System.out.println("1 - prev (<<<)   2 - next (>>>)\n\n3 - Добавить\n4 - Удалить\n5 - Найти\n6 - Назад\n\n7 - Выход");
-        String key = in.next();
-        switch (key) {
-            case "1" -> {
-                presenter.prev("camels");
-                menu.thirdMenu_2_2(menu);
-            }
-            case "2" -> {
-                presenter.next("camels");
-                menu.thirdMenu_2_2(menu);
-            }
-            case "3" -> presenter.addAnimal(AnimalTypes.CAMEL);
-            case "4" -> presenter.removeAnimal(AnimalTypes.CAMEL);
-            case "6" -> menu.secondMenu_2(menu);
-            case "7" -> System.exit(0);
-            default -> {
-                menu.thirdMenu_2_2(menu);
-                System.out.println("Такой команды нет");
-            }
-        }
-    }
-
-    public void thirdMenu_2_3(Menu menu) {
-        Scanner in = new Scanner(System.in);
-        System.out.println("1 - prev (<<<)   2 - next (>>>)\n\n3 - Добавить\n4 - Удалить\n5 - Найти\n6 - Назад\n\n7 - Выход");
-        String key = in.next();
-        switch (key) {
-            case "1" -> {
-                presenter.prev("donkeys");
-                menu.thirdMenu_2_3(menu);
-            }
-            case "2" -> {
-                presenter.next("donkeys");
-                menu.thirdMenu_2_3(menu);
-            }
-            case "3" -> presenter.addAnimal(AnimalTypes.DONKEY);
-            case "4" -> presenter.removeAnimal(AnimalTypes.DONKEY);
-            case "6" -> menu.secondMenu_2(menu);
-            case "7" -> System.exit(0);
-            default -> {
-                menu.thirdMenu_2_3(menu);
+                menu.thirdSubMenu(menu, type);
                 System.out.println("Такой команды нет");
             }
         }
